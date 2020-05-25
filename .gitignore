@@ -9,6 +9,9 @@ __pycache__/
 # EPUB Source
 *.epub
 
+# JSON Data outputs
+*.json
+
 # Distribution / packaging
 .Python
 build/
