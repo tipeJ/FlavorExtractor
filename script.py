@@ -31,9 +31,9 @@ class Ingredient():
         self.Taste = ''
         self.Weight = ''
         self.Volume = ''
-        self.Techniques = ''
         self.Function = ''
         self.Ingredients = {}
+        self.Techniques = []
         self.FlavorAffinities = None
 
     def printIngredient(self):
@@ -114,17 +114,21 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                             elif (strongTag == "Volume:"):
                                 ingredient.Volume = title.replace("Volume:", "")
                             elif (strongTag == "Techniques:"):
-                                ingredient.Techniques = title.replace("Techniques:", "")
+                                techniques = title.replace("Techniques:", "").strip()
+                                ingredient.Techniques = techniques.split(', ')
                             elif (strongTag == "Function:"):
                                 ingredient.Function = title.replace("Function:", "")
-                            # Add an ingredient
-                            elif (title[0] == '*'):
-                                score = 3
-                            elif (title.isupper()):
-                                score = 2
                             else:
-                                score = 1
-                        ingredient.Ingredients[title] = score
+                                # Add an ingredient
+                                if (title[0] == '*'):
+                                    score = 3
+                                elif (title.isupper()):
+                                    score = 2
+                                else:
+                                    score = 1
+                                ingredient.Ingredients[title] = score
+                        else:
+                            ingredient.Ingredients[title] = score
                 elif (paragraph['class'][0] == flavorAffinitiesClass and paragraph.text == "Flavor Affinities"):
                     ingredient.FlavorAffinities = []
 # Handle the last ingredient of the source
