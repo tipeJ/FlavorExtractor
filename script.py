@@ -122,8 +122,11 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                                 # Add an ingredient
                                 if (title[0] == '*'):
                                     score = 3
+                                    # Remove *
+                                    title = title[1:]
                                 elif (title.isupper()):
                                     score = 2
+                                    title = title.title
                                 else:
                                     score = 1
                                 ingredient.Ingredients[title] = score
