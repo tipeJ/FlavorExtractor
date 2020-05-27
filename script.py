@@ -8,7 +8,7 @@ import re
 book = epub.read_epub('source.epub')
 
 titleClasses = ['lh1', 'lh']
-subtitleClass = 'ul'
+subtitleClasses = ['ul', 'ul1', 'ul2', 'ul3']
 flavorAffinitiesClass = 'h4'
 
 class Ingredient():
@@ -98,7 +98,7 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                     if (ingredient is not None):
                         handleIngredient()
                     ingredient = Ingredient(title)
-                elif (paragraph['class'][0] == subtitleClass):
+                elif (subtitleClasses.__contains__(paragraph['class'][0])):
                     title = paragraph.text
                     if (ingredient.FlavorAffinities is not None):
                         ingredient.FlavorAffinities.append(title)
