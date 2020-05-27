@@ -22,6 +22,7 @@ class Ingredient():
     Function = None
     Ingredients = {}
     FlavorAffinities = None
+    Avoid = None
 
     # Constructor
     def __init__(self, Name):
@@ -35,6 +36,7 @@ class Ingredient():
         self.Ingredients = {}
         self.Techniques = []
         self.FlavorAffinities = None
+        self.Avoid = None
 
     def printIngredient(self):
         print('\n' + self.Name)
@@ -48,6 +50,8 @@ class Ingredient():
         print(self.Ingredients)
         print("\nFlavorAffinities:")
         print(self.FlavorAffinities)
+        print("\nAvoid:")
+        print(self.Avoid)
 
     def toJson(self):
         j = {}
@@ -62,6 +66,7 @@ class Ingredient():
 
         j['Ingredients'] = self.Ingredients
         j['FlavorAffinities'] = self.FlavorAffinities
+        j['Avoid'] = self.Avoid
         
         return j
 
@@ -73,6 +78,8 @@ ingredient = None
 
 def handleIngredient():
     data['Ingredients'].append(ingredient.toJson())
+    if (ingredient.Avoid is not None):
+        ingredient.printIngredient()
 
 # Iterate through the document files in the book
 for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
@@ -95,6 +102,8 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                     title = paragraph.text
                     if (ingredient.FlavorAffinities is not None):
                         ingredient.FlavorAffinities.append(title)
+                    elif (ingredient.Avoid is not None):
+                        ingredient.Avoid.append(title)
                     else:
                         strongTag = paragraph.find('strong')
                         # Remove (See xy) from titles
@@ -105,7 +114,10 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                         # Check if a part of the text is in bold
                         if (strongTag is not None):
                             strongTag = strongTag.text
-                            if (strongTag == "Season:"):
+                            if (strongTag == "AVOID"):
+                                # Initialize Avoid list
+                                ingredient.Avoid = []
+                            elif (strongTag == "Season:"):
                                 ingredient.Season = title.replace("Season:", "")
                             elif (strongTag == "Taste:"):
                                 ingredient.Taste = title.replace("Taste:", "")
