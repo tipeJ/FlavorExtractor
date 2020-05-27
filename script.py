@@ -20,6 +20,7 @@ class Ingredient():
     Volume = None
     Techniques = None
     Function = None
+    Tips = None
     Ingredients = {}
     FlavorAffinities = None
     Avoid = None
@@ -33,6 +34,7 @@ class Ingredient():
         self.Weight = ''
         self.Volume = ''
         self.Function = ''
+        self.Tips = ''
         self.Ingredients = {}
         self.Techniques = []
         self.FlavorAffinities = None
@@ -46,6 +48,7 @@ class Ingredient():
         print("Volume:" + self.Volume)
         print("Techniques:" + self.Techniques)
         print("Function:" + self.Function)
+        print("Tips:" + self.Tips)
         print("\nIngredients:")
         print(self.Ingredients)
         print("\nFlavorAffinities:")
@@ -63,6 +66,7 @@ class Ingredient():
         j['Volume'] = self.Volume
         j['Techniques'] = self.Techniques
         j['Function'] = self.Function
+        j['Tips'] = self.Tips
 
         j['Ingredients'] = self.Ingredients
         j['FlavorAffinities'] = self.FlavorAffinities
@@ -78,7 +82,7 @@ ingredient = None
 
 def handleIngredient():
     data['Ingredients'].append(ingredient.toJson())
-    if (ingredient.Avoid is not None):
+    if (ingredient.Tips != ''):
         ingredient.printIngredient()
 
 # Iterate through the document files in the book
@@ -130,6 +134,8 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                                 ingredient.Techniques = techniques.split(', ')
                             elif (strongTag == "Function:"):
                                 ingredient.Function = title.replace("Function:", "")
+                            elif (strongTag == "Tips:"):
+                                ingredient.Tips = title.replace("Tips:", "")
                             else:
                                 # Add an ingredient
                                 if (title[0] == '*'):
