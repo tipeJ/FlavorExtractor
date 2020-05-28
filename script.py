@@ -46,7 +46,7 @@ class Ingredient():
         print("Taste:" + self.Taste)
         print("Weight:" + self.Weight)
         print("Volume:" + self.Volume)
-        print("Techniques:" + self.Techniques)
+        #print("Techniques:" + self.Techniques)
         print("Function:" + self.Function)
         print("Tips:" + self.Tips)
         print("\nIngredients:")
@@ -81,9 +81,9 @@ data['Ingredients'] = []
 ingredient = None
 
 def handleIngredient():
+    sorted(ingredient.Ingredients.items(), key=lambda x: x[1], reverse=True)
     data['Ingredients'].append(ingredient.toJson())
-    if (ingredient.Tips != ''):
-        ingredient.printIngredient()
+    ingredient.printIngredient()
 
 # Iterate through the document files in the book
 for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
@@ -103,17 +103,17 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                         handleIngredient()
                     ingredient = Ingredient(title)
                 elif (subtitleClasses.__contains__(paragraph['class'][0])):
-                    title = paragraph.text
+                    flavorTitle = paragraph.text
                     if (ingredient.FlavorAffinities is not None):
-                        ingredient.FlavorAffinities.append(title)
+                        ingredient.FlavorAffinities.append(flavorTitle)
                     elif (ingredient.Avoid is not None):
-                        ingredient.Avoid.append(title)
+                        ingredient.Avoid.append(flavorTitle)
                     else:
                         strongTag = paragraph.find('strong')
                         # Remove (See xy) from titles
-                        if (title.__contains__('(See')):
-                            splitTitle = re.split('(\(See+)', title)
-                            title = splitTitle[0]
+                        if (flavorTitle.__contains__('(See')):
+                            splitTitle = re.split('(\(See+)', flavorTitle)
+                            flavorTitle = splitTitle[0]
                         score = 0
                         # Check if a part of the text is in bold
                         if (strongTag is not None):
@@ -122,34 +122,34 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                                 # Initialize Avoid list
                                 ingredient.Avoid = []
                             elif (strongTag == "Season:"):
-                                ingredient.Season = title.replace("Season:", "")
+                                ingredient.Season = flavorTitle.replace("Season:", "")
                             elif (strongTag == "Taste:"):
-                                ingredient.Taste = title.replace("Taste:", "")
+                                ingredient.Taste = flavorTitle.replace("Taste:", "")
                             elif (strongTag == "Weight:"):
-                                ingredient.Weight = title.replace("Weight:", "")
+                                ingredient.Weight = flavorTitle.replace("Weight:", "")
                             elif (strongTag == "Volume:"):
-                                ingredient.Volume = title.replace("Volume:", "")
+                                ingredient.Volume = flavorTitle.replace("Volume:", "")
                             elif (strongTag == "Techniques:"):
-                                techniques = title.replace("Techniques:", "").strip()
+                                techniques = flavorTitle.replace("Techniques:", "").strip()
                                 ingredient.Techniques = techniques.split(', ')
                             elif (strongTag == "Function:"):
-                                ingredient.Function = title.replace("Function:", "")
+                                ingredient.Function = flavorTitle.replace("Function:", "")
                             elif (strongTag == "Tips:"):
-                                ingredient.Tips = title.replace("Tips:", "")
+                                ingredient.Tips = flavorTitle.replace("Tips:", "")
                             else:
                                 # Add an ingredient
-                                if (title[0] == '*'):
+                                if (flavorTitle[0] == '*'):
                                     score = 3
                                     # Remove *
-                                    title = title[1:]
-                                elif (title.isupper()):
+                                    flavorTitle = flavorTitle[1:]
+                                elif (flavorTitle.isupper()):
                                     score = 2
-                                    title = title.title
+                                    flavorTitle = flavorTitle.title()
                                 else:
                                     score = 1
-                                ingredient.Ingredients[title] = score
+                                ingredient.Ingredients[flavorTitle] = score
                         else:
-                            ingredient.Ingredients[title] = score
+                            ingredient.Ingredients[flavorTitle] = score
                 elif (paragraph['class'][0] == flavorAffinitiesClass and paragraph.text == "Flavor Affinities"):
                     ingredient.FlavorAffinities = []
 # Handle the last ingredient of the source
