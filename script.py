@@ -81,7 +81,7 @@ data['Ingredients'] = []
 ingredient = None
 
 def handleIngredient():
-    sorted(ingredient.Ingredients.items(), key=lambda x: x[1], reverse=True)
+    ingredient.Ingredients = {k: v for k, v in sorted(ingredient.Ingredients.items(), key=lambda item: item[1], reverse=True)}
     data['Ingredients'].append(ingredient.toJson())
     ingredient.printIngredient()
 
