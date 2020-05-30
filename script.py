@@ -11,7 +11,11 @@ titleClasses = ['lh1', 'lh']
 subtitleClasses = ['ul', 'ul1', 'ul2', 'ul3']
 flavorAffinitiesClass = 'h4'
 
+# Index (ID) of current ingredient
+currentIngredient = 0
+
 class Ingredient():
+    ID = None
     Name = ''
 
     Season = None
@@ -26,7 +30,9 @@ class Ingredient():
     Avoid = None
 
     # Constructor
-    def __init__(self, Name):
+    def __init__(self, Name, index):
+        self.ID = index
+        index = index + 1
         self.Name = Name
 
         self.Season = ''
@@ -42,6 +48,7 @@ class Ingredient():
 
     def printIngredient(self):
         print('\n' + self.Name)
+        print('\nID: %d' %self.ID)
         print("\nSeason:" + self.Season)
         print("Taste:" + self.Taste)
         print("Weight:" + self.Weight)
@@ -58,6 +65,7 @@ class Ingredient():
 
     def toJson(self):
         j = {}
+        j['ID'] = self.ID
         j['Name'] = self.Name.title()
 
         j['Season'] = self.Season
@@ -78,6 +86,7 @@ class Ingredient():
 data = {}
 data['Ingredients'] = []
 
+# The current Ingredient
 ingredient = None
 
 def handleIngredient():
@@ -101,7 +110,8 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                         title = splitTitle[0]
                     if (ingredient is not None):
                         handleIngredient()
-                    ingredient = Ingredient(title)
+                    ingredient = Ingredient(title, currentIngredient)
+                    currentIngredient = currentIngredient + 1
                 elif (subtitleClasses.__contains__(paragraph['class'][0])):
                     flavorTitle = paragraph.text
                     if (ingredient.FlavorAffinities is not None):
