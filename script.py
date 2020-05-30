@@ -132,20 +132,20 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                                 # Initialize Avoid list
                                 ingredient.Avoid = []
                             elif (strongTag == "Season:"):
-                                ingredient.Season = flavorTitle.replace("Season:", "")
+                                ingredient.Season = flavorTitle.replace("Season:", "").capitalize()
                             elif (strongTag == "Taste:"):
-                                ingredient.Taste = flavorTitle.replace("Taste:", "")
+                                ingredient.Taste = flavorTitle.replace("Taste:", "").capitalize()
                             elif (strongTag == "Weight:"):
-                                ingredient.Weight = flavorTitle.replace("Weight:", "")
+                                ingredient.Weight = flavorTitle.replace("Weight:", "").capitalize()
                             elif (strongTag == "Volume:"):
-                                ingredient.Volume = flavorTitle.replace("Volume:", "")
+                                ingredient.Volume = flavorTitle.replace("Volume:", "").capitalize()
                             elif (strongTag == "Techniques:"):
                                 techniques = flavorTitle.replace("Techniques:", "").strip()
                                 ingredient.Techniques = techniques.split(', ')
                             elif (strongTag == "Function:"):
-                                ingredient.Function = flavorTitle.replace("Function:", "")
+                                ingredient.Function = flavorTitle.replace("Function:", "").capitalize()
                             elif (strongTag == "Tips:"):
-                                ingredient.Tips = flavorTitle.replace("Tips:", "")
+                                ingredient.Tips = flavorTitle.replace("Tips:", "").capitalize()
                             else:
                                 # Add an ingredient
                                 if (flavorTitle[0] == '*'):
@@ -154,10 +154,10 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                                     flavorTitle = flavorTitle[1:]
                                 elif (flavorTitle.isupper()):
                                     score = 2
-                                    flavorTitle = flavorTitle.title()
+                                    flavorTitle = flavorTitle
                                 else:
                                     score = 1
-                                ingredient.Ingredients[flavorTitle] = score
+                                ingredient.Ingredients[flavorTitle.lower().title()] = score
                         else:
                             ingredient.Ingredients[flavorTitle] = score
                 elif (paragraph['class'][0] == flavorAffinitiesClass and paragraph.text == "Flavor Affinities"):
