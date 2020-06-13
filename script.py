@@ -161,7 +161,7 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                                     score = 1
                                 ingredient.Ingredients[flavorTitle.lower().title()] = score
                         else:
-                            ingredient.Ingredients[flavorTitle] = score
+                            ingredient.Ingredients[flavorTitle.lower().title()] = score
                 elif (paragraph['class'][0] == flavorAffinitiesClass and paragraph.text == "Flavor Affinities"):
                     ingredient.FlavorAffinities = []
 # Handle the last ingredient of the source
