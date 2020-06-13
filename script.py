@@ -90,9 +90,11 @@ data['Ingredients'] = []
 ingredient = None
 
 def handleIngredient():
-    ingredient.Ingredients = {k: v for k, v in sorted(ingredient.Ingredients.items(), key=lambda item: item[1], reverse=True)}
-    data['Ingredients'].append(ingredient.toJson())
-    ingredient.printIngredient()
+    # Check if ingredient has any suggested flavors. If not, skip.
+    if ingredient.Ingredients:
+        ingredient.Ingredients = {k: v for k, v in sorted(ingredient.Ingredients.items(), key=lambda item: item[1], reverse=True)}
+        data['Ingredients'].append(ingredient.toJson())
+        ingredient.printIngredient()
 
 # Iterate through the document files in the book
 for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
