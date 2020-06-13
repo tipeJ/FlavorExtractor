@@ -168,5 +168,5 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
 handleIngredient()
 
 # Dump the json data
-with open('data.json', 'w') as outfile:
+with open('flavordata.json', 'w') as outfile:
     json.dump(data, outfile)
