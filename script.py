@@ -117,9 +117,9 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
                 elif (subtitleClasses.__contains__(paragraph['class'][0])):
                     flavorTitle = paragraph.text
                     if (ingredient.FlavorAffinities is not None):
-                        ingredient.FlavorAffinities.append(flavorTitle)
+                        ingredient.FlavorAffinities.append(flavorTitle.lower().title())
                     elif (ingredient.Avoid is not None):
-                        ingredient.Avoid.append(flavorTitle)
+                        ingredient.Avoid.append(flavorTitle.lower().title())
                     else:
                         strongTag = paragraph.find('strong')
                         # Remove (See xy) from titles
